@@ -7,16 +7,26 @@ public class Main{
 	public static void main(String[] args){
 		JFrame frame = new JFrame("My Spring Final Project");
     JPanel panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     frame.setSize(WIDTH, HEIGHT);
     Displayer score = new Displayer("score", 0);
     Displayer power = new Displayer("power", 1);
     Displayer cost = new Displayer("cost", 30);
-    class IncListener implements ActionListener{
+    Displayer autoClickers = new Displayer("autos", 0);
+    Timer timer = new Timer(1000, new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+        score.update(score.getState() + autoClickers.getState() * power.getState());
+      }
+    });
+    JButton increment = new JButton("Increment"); 
+    JButton powerIncrement = new JButton("Power Up");
+    JButton buyAuto = new JButton("Buy Auto-Clicker");
+    increment.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
         score.update(score.getState() + power.getState());
       }
-    }
-    class BuyListener implements ActionListener{
+    });
+    powerIncrement.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
         if(score.getState() >= cost.getState()){
           power.update(power.getState() + 1);
@@ -24,18 +34,26 @@ public class Main{
           cost.update((int)(cost.getState() * 1.15));
         }
       }
-    }
-    JButton increment = new JButton("Increment"); 
-    JButton powerIncrement = new JButton("Power Up");
-    increment.addActionListener(new IncListener());
-    powerIncrement.addActionListener(new BuyListener());
+    });
+    buyAuto.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+        if(score.getState() >= cost.getState()){
+          autoClickers.update(autoClickers.getState() + 1);
+          score.update(score.getState() - cost.getState());
+          cost.update((int)(cost.getState() * 1.15));
+        }
+      }
+    });
     panel.add(cost);
     panel.add(power);
     panel.add(powerIncrement);
     panel.add(increment);
     panel.add(score);
-    frame.add(panel);
+    panel.add(buyAuto);
+    panel.add(autoClickers);
+    frame.getContentPane().add(panel);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true); 
+		frame.setVisible(true);
+    timer.start();
 	}
 }
