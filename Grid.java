@@ -53,13 +53,18 @@ public class Grid extends Canvas{
 	active.rotate(direction);
 	for(Pair offset : offsets){
 	    active.translate(offset);
-	    if(checkState()){
-		return;
-	    }
+	    if(checkState()) return;
+	    
 	    active.translate(offset.inverse());
 	}
 	//if no rotation succeeded, return rotation state to original;
 	active.rotate(-direction);
+    }
+    public void shift(int x){
+	Pair offset = new Pair(x, 0);
+	active.translate(offset);
+	if(checkState()) return;
+	active.translate(offset.inverse());
     }
     public void drop(){
 	active.drop();
