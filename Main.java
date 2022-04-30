@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,6 +21,8 @@ public class Main{
 			g.shift(-1);
 		    }else if(e.getKeyChar() == 'd'){
 			g.shift(1);
+		    }else if(e.getKeyChar() == 's'){
+			g.drop();
 		    }
 		}
 	    });
@@ -32,9 +33,10 @@ public class Main{
 		private int state = 0;
 		public void actionPerformed(ActionEvent e){
 		    if(++state == 10){
-			g.drop();
 			g.repaint();
 			state = 0;
+		    }else if (state == 9){
+			g.drop();
 		    }
 		}
 	    }).start();

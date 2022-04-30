@@ -12,6 +12,13 @@ public class Piece implements Iterable<Pixel>{
 	this.raw = raw;
 	this.offsets = offsets;
     }
+    public Piece clone(){
+	Piece out = new Piece(raw, offsets);
+	out.x = this.x;
+	out.y = this.y;
+	out.rotation = this.rotation;
+	return out;
+    }
     public Pair[] generateOffsets(int direction){
 	int begin = rotation;
 	int end = (rotation + direction) % 4;
