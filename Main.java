@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 public class Main{
     public static final int WIDTH = 500;
-    public static final int HEIGHT = 400;
+    public static final int HEIGHT = 800;
     public static void main(String[] args){
 	JFrame frame = new JFrame("My Spring Final Project");
 	Grid g = new Grid();

@@ -9,7 +9,7 @@ public class Grid extends Canvas{
     private Piece active;
     private Piece ghost;
     public Grid(){
-	setSize(500, 500);
+	setSize(500, 800);
 	active = null;
 	ghost = null;
 	fill = new int[14][24];
