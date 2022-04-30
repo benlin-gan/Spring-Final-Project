@@ -9,7 +9,7 @@ public class Grid extends Canvas{
     public Grid(){
 	setSize(500, 500);
 	active = null;
-	state = new int[14][14];
+	state = new int[14][24];
 	for(int i = 0; i < state.length; i++){
 	    for(int j = 0; j < state[0].length; j++){
 		if(i == 0 || j == 0 || i == state.length -1 || j == state[0].length-1){
@@ -48,6 +48,19 @@ public class Grid extends Canvas{
 	    if(p.STATE != 0) state[p.X][p.Y] = 0;
 	}
     }
+    public void rotate(int direction){
+	Pair[] offsets = active.generateOffsets(direction);
+	active.rotate(direction);
+	for(Pair offset : offsets){
+	    active.translate(offset);
+	    if(checkState()){
+		return;
+	    }
+	    active.translate(offset.inverse());
+	}
+	//if no rotation succeeded, return rotation state to original;
+	active.rotate(-direction);
+    }
     public void drop(){
 	active.drop();
 	if(!checkState()){
@@ -57,6 +70,6 @@ public class Grid extends Canvas{
 	}
     }
     public void spawn(){
-	active = new T(1);
+	active = new T();
     }
 }

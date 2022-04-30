@@ -2,16 +2,35 @@ import java.util.Iterator;
 public class Piece implements Iterable<Pixel>{
     private int x;
     private int y;
+    private int rotation;
+    private Pair[][] offsets;
     private int[][] raw;
-    public Piece(int y, int[][] raw){
-	x = 1;
-	this.y = y;
+    public Piece(int[][] raw, Pair[][] offsets){
+	y = 1;
+	x = 5;
+	rotation = 0;
 	this.raw = raw;
+	this.offsets = offsets;
     }
-    public void rotate(boolean clockwise){
-	raw = rotate(raw);
-	if(!clockwise){
-	    raw = rotate(rotate(raw));
+    public Pair[] generateOffsets(int direction){
+	int begin = rotation;
+	int end = (rotation + direction) % 4;
+	Pair[] toReturn = new Pair[offsets[0].length];
+	for(int i = 0; i < toReturn.length; i++){
+	    toReturn[i] = Pair.add(offsets[begin][i], offsets[end][i].inverse());
+	}
+	return toReturn;
+    }
+    public void translate(Pair offset){
+	x += offset.X;
+	y += offset.Y;
+    }
+    public void rotate(int direction){
+	//mutator for rotation and raw
+	rotation = (rotation + direction) % 4;
+	int times = direction % 4;
+	for(int i = 0; i < times; i++){
+	    raw = rotate(raw);
 	}
     }
     private int[][] rotate(int[][] input){

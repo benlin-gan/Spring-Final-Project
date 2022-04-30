@@ -15,6 +15,7 @@ public class Main{
 	new Timer(1000, new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 		    g.drop();
+		    g.rotate(3);
 		    g.repaint();
 		}
 	    }).start();
