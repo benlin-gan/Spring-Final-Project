@@ -1,4 +1,5 @@
-public class Piece{
+import java.util.Iterator;
+public class Piece implements Iterable<Pixel>{
     private int x;
     private int y;
     private int[][] raw;
@@ -26,6 +27,33 @@ public class Piece{
 	}
 	return output;
     }
+    public PieceIterator iterator(){
+	return new PieceIterator(this);
+    }
+    class PieceIterator implements Iterator<Pixel>{
+	private Piece p;
+	private int row;
+	private int col;
+	public PieceIterator(Piece p){
+	    this.p = p;
+	    row = 0;
+	    col = 0;
+	}
+	public boolean hasNext(){
+	    return (row != p.raw.length - 1) || (col != p.raw[0].length - 1);
+	}
+	public Pixel next(){
+	    int x = col;
+	    int y = row;
+	    int state = p.raw[row][col];
+	    if(++col == p.raw.length){
+		col = 0;
+		row++;
+	    }
+	    return new Pixel(x + p.x, y + p.y, state);
+	}
+    }
+    
     public int getX(){
 	return x;
     }
@@ -36,7 +64,9 @@ public class Piece{
 	return raw;
     }
     public void drop(){
-	x--;
+	y++;
     }
-  
+    public void undrop(){
+	y--;
+    }
 }

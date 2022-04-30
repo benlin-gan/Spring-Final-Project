@@ -3,12 +3,20 @@ import java.awt.event.*;
 import javax.swing.*;
 public class Grid extends Canvas{
     //composite information about active piece and grid state.
-    private static final Color[] colors = new Color[]{Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK };
-    private int[][] state = new int[14][14];
+    private static final Color[] colors = new Color[]{Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK };
+    private int[][] state;
     private Piece active;
     public Grid(){
 	setSize(500, 500);
 	active = null;
+	state = new int[14][14];
+	for(int i = 0; i < state.length; i++){
+	    for(int j = 0; j < state[0].length; j++){
+		if(i == 0 || j == 0 || i == state.length -1 || j == state[0].length-1){
+		    state[i][j] = 8;
+		}
+	    }
+	}
     }
     public void paint(Graphics g){
 	if(active == null) spawn();
@@ -17,34 +25,36 @@ public class Grid extends Canvas{
 	}
 	for(int i = 0; i < state.length; i++){
 	    for(int j = 0; j < state[0].length; j++){
-		if(i == 0 || j == 0 || i == state.length -1 || j == state[0].length-1){
-		    g.setColor(Color.BLACK);
-		}else{
-		    g.setColor(colors[state[i][j]]);
-		}
+		g.setColor(colors[state[i][j]]);
 		g.fillRect(i*30, j*30, 30, 30);
 	    }
 	}
+	removePiece();
     }
     private boolean checkState(){
-	for(int i = 0; i < active.getRaw().length; i++){
-	    for(int j = 0; j < active.getRaw()[0].length; j++){
-		if(active.getRaw()[i][j] != 0 && state[active.getX() + j][active.getY() + i] != 0){
-		    return false;
-		}
-	    }
+	//returns true if active piece is in a valid position;
+	for(Pixel p : active){
+	    if(state[p.X][p.Y] != 0 && p.STATE != 0) return false;
 	}
 	return true;
     }
     private void fillPiece(){
-	for(int i = 0; i < active.getRaw().length; i++){
-	    for(int j = 0; j < active.getRaw()[0].length; j++){
-		state[active.getX() + j][active.getY() + i] = active.getRaw()[i][j];
-	    }
+	for(Pixel p : active){
+	    if(p.STATE != 0) state[p.X][p.Y] = p.STATE;
+	}
+    }
+    private void removePiece(){
+	for(Pixel p: active){
+	    if(p.STATE != 0) state[p.X][p.Y] = 0;
 	}
     }
     public void drop(){
 	active.drop();
+	if(!checkState()){
+	    active.undrop();
+	    fillPiece();
+	    spawn();
+	}
     }
     public void spawn(){
 	active = new T(1);

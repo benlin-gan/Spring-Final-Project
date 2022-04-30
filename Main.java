@@ -12,9 +12,10 @@ public class Main{
 	frame.add(g);
 	frame.pack();
 	frame.setVisible(true);
-	new Timer(16, new ActionListener(){
+	new Timer(1000, new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		    
+		    g.drop();
+		    g.repaint();
 		}
 	    }).start();
     }
