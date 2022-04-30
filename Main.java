@@ -29,5 +29,11 @@ public class Main{
       }
       System.out.println();
     }
+    new Timer(16, new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+        //in main event loop.
+        //Every non loop where graphics don't update, 
+      }
+    }).start();
   }
 }

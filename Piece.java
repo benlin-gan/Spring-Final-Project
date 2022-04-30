@@ -1,5 +1,14 @@
 public class Piece{
-  public int[][] rotate(int[][] input){
+  private int x;
+  private int y;
+  private int[][] raw;
+  public void rotate(boolean clockwise){
+    raw = rotate(raw);
+    if(!clockwise){
+      raw = rotate(rotate(raw));
+    }
+  }
+  private int[][] rotate(int[][] input){
     //rotation about the center of a square grid
     int[][] output = new int[input.length][input[0].length];
     for(int i = 0; i < input.length / 2 + 1; i++){
@@ -11,5 +20,14 @@ public class Piece{
       }
     }
     return output;
+  }
+  public int getX(){
+    return x;
+  }
+  public int getY(){
+    return y;
+  }
+  public int[][] getRaw(){
+    return raw;
   }
 }

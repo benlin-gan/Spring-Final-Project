@@ -2,8 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 public class Grid extends Canvas{
+  //composite information about active piece and grid state.
   private static final Color[] colors = new Color[]{Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK };
   private int[][] state = new int[14][14];
+  private Piece active;
   public Grid(){
     setSize(500, 500);
   }
@@ -15,9 +17,13 @@ public class Grid extends Canvas{
       }
     }
   }
-  Timer timer = new Timer(16, new ActionListener(){
-    public void actionPerformed(ActionEvent e){
-      
+  private void checkState(){
+    for(int i = active.getX(); i < state.length; i++){
+      for(int j = active.getY(); j< state[0].length; j++){
+        if(active.getRaw()[i][j] != 0 && state[active.getX() + i][active.getY() + j] != 0){
+          
+        }
+      }
     }
-  });
+  }
 }
