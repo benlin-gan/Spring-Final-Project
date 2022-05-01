@@ -6,14 +6,16 @@ public class Grid extends Canvas{
     private static final Color[] colors = {Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK};
     private int[][] fill;
     private int[][] border;
+    private int score;
     private Piece active;
     private Piece ghost;
     public Grid(){
 	setSize(500, 800);
+	score = 0;
 	active = null;
 	ghost = null;
-	fill = new int[14][24];
-	border = new int[14][24];
+	fill = new int[24][14];
+	border = new int[24][14];
 	for(int i = 0; i < fill.length; i++){
 	    for(int j = 0; j < fill[0].length; j++){
 		if(i == 0 || j == 0 || i == fill.length -1 || j == fill[0].length-1){
@@ -34,7 +36,7 @@ public class Grid extends Canvas{
 	 fillPiece(active);
 	for(int i = 0; i < fill.length; i++){
 	    for(int j = 0; j < fill[0].length; j++){
-		Shape box = new Rectangle(i*30+1, j*30+1, 28, 28);
+		Shape box = new Rectangle(j*30+1, i*30+1, 28, 28);
 		g2.setPaint(colors[fill[i][j]]);
 		g2.fill(box);
 		g2.setPaint(colors[border[i][j]].brighter());
@@ -47,25 +49,25 @@ public class Grid extends Canvas{
     private boolean checkState(Piece piece){
 	//returns true if piece is in a valid position;
 	for(Pixel p : piece){
-	    if(fill[p.X][p.Y] != 0 && p.STATE != 0) return false;
+	    if(fill[p.Y][p.X] != 0 && p.STATE != 0) return false;
 	}
 	return true;
     }
     private void fillPiece(Piece piece){
 	for(Pixel p : piece){
-	    if(p.STATE != 0) fill[p.X][p.Y] = p.STATE;
+	    if(p.STATE != 0) fill[p.Y][p.X] = p.STATE;
 	}
     }
     private void outlinePiece(Piece piece){
 	for(Pixel p : piece){
-	    if(p.STATE != 0) border[p.X][p.Y] = p.STATE;
+	    if(p.STATE != 0) border[p.Y][p.X] = p.STATE;
 	}
     }
     private void removePiece(Piece piece){
 	for(Pixel p: piece){
 	    if(p.STATE != 0){
-		fill[p.X][p.Y] = 0;
-		border[p.X][p.Y] = 0;
+		fill[p.Y][p.X] = 0;
+		border[p.Y][p.X] = 0;
 	    }
 	}
     }
@@ -93,15 +95,51 @@ public class Grid extends Canvas{
 	if(checkState(active)) return;
 	active.translate(offset.inverse());
     }
+    public void hardDrop(){
+	active = ghost;
+	ghost = null;
+	fillPiece(active);
+	spawn();
+	clear();	
+    }
     public void drop(){
 	active.drop();
 	if(!checkState(active)){
 	    active.undrop();
 	    fillPiece(active);
+	    clear();
 	    spawn();
 	}
     }
     public void spawn(){
 	active = new T();
+    }
+    private void clear(){
+	int lines = 0;
+	for(int i = fill.length - 2; i > 0; i--){
+	    int[] line = fill[i];
+	    boolean shouldClear = true;
+	    for(int j = 1; j < line.length - 1; j++){
+		if(line[j] == 0) shouldClear = false;
+	    }
+	    if(shouldClear){
+		lines++;
+	    }
+	    for(int j = 1; j < line.length - 1; j++){
+		int toCopy = i - lines;
+		if(toCopy > 0){
+		    line[j] = fill[toCopy][j];
+		}else{
+		    line[j] = 0;
+		}
+	    }
+	}
+	if(lines == 1) score += 100;
+	else if(lines == 2) score += 300;
+	else if(lines == 3) score += 500;
+	else if(lines == 4) score += 800;
+    }
+    public int getScore(){
+	return score;
     }
 }

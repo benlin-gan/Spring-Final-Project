@@ -1,11 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-public class Main{
-    public static final int WIDTH = 500;
+import javax.swing.SwingUtilities;
+public class Main implements Runnable{
+    public static final int WIDTH = 600;
     public static final int HEIGHT = 800;
-    public static void main(String[] args){
-	JFrame frame = new JFrame("My Spring Final Project");
+    public void run(){
+    	JFrame frame = new JFrame("My Spring Final Project");
+	JPanel panel = new JPanel();
 	Grid g = new Grid();
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,23 +25,32 @@ public class Main{
 			g.shift(1);
 		    }else if(e.getKeyChar() == 's'){
 			g.drop();
+		    }else if(e.getKeyChar() == ' '){
+			g.hardDrop();
 		    }
 		}
 	    });
-	frame.add(g);
+	panel.add(g);
+	DisplayBox score = new DisplayBox("score", g.getScore());
+	panel.add(score);
+	frame.add(panel);
 	frame.pack();
 	frame.setVisible(true);
-	new Timer(50, new ActionListener(){
+	new Timer(100, new ActionListener(){
 		private int state = 0;
 		public void actionPerformed(ActionEvent e){
 		    if(++state == 10){
 			g.repaint();
+			score.update(g.getScore());
 			state = 0;
 		    }else if (state == 9){
 			g.drop();
 		    }
 		}
 	    }).start();
-
+    }
+    public static void main(String[] args){
+	Main main = new Main();
+	SwingUtilities.invokeLater(main);
     }
 }
