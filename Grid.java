@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.Comparator;
 public class Grid extends Canvas{
     //composite information about active piece and grid state.
     private static final Color[] colors = {Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK};
@@ -124,16 +126,24 @@ public class Grid extends Canvas{
 	    }
 	    if(shouldClear){
 		lines++;
-	    }
-	    for(int j = 1; j < line.length - 1; j++){
-		int toCopy = i - lines;
-		if(toCopy > 0){
-		    line[j] = fill[toCopy][j];
-		}else{
+		for(int j = 1; j < line.length - 1; j++){
 		    line[j] = 0;
 		}
 	    }
 	}
+	Arrays.sort(fill, 1, fill.length - 1, new Comparator<int[]>(){
+		public int compare(int[] a, int[] b){
+		    if(isEmpty(a) == isEmpty(b)) return 0;
+		    if(isEmpty(a) && !isEmpty(b)) return -1;
+		    return 1;
+		}
+		private boolean isEmpty(int[] a){
+		    for(int i = 1; i < a.length - 1; i++){
+			if(a[i] != 0) return false;
+		    }
+		    return true;
+		}
+	    });
 	if(lines == 1) score += 100;
 	else if(lines == 2) score += 300;
 	else if(lines == 3) score += 500;
