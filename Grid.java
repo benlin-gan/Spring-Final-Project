@@ -9,11 +9,13 @@ public class Grid extends Canvas{
     private int score;
     private Piece active;
     private Piece ghost;
+    private Bag bag;
     public Grid(){
 	setSize(500, 800);
 	score = 0;
 	active = null;
 	ghost = null;
+	bag = new Bag();
 	fill = new int[24][14];
 	border = new int[24][14];
 	for(int i = 0; i < fill.length; i++){
@@ -49,26 +51,24 @@ public class Grid extends Canvas{
     private boolean checkState(Piece piece){
 	//returns true if piece is in a valid position;
 	for(Pixel p : piece){
-	    if(fill[p.Y][p.X] != 0 && p.STATE != 0) return false;
+	    if(fill[p.Y][p.X] != 0) return false;
 	}
 	return true;
     }
     private void fillPiece(Piece piece){
 	for(Pixel p : piece){
-	    if(p.STATE != 0) fill[p.Y][p.X] = p.STATE;
+	    fill[p.Y][p.X] = p.STATE;
 	}
     }
     private void outlinePiece(Piece piece){
 	for(Pixel p : piece){
-	    if(p.STATE != 0) border[p.Y][p.X] = p.STATE;
+	    border[p.Y][p.X] = p.STATE;
 	}
     }
     private void removePiece(Piece piece){
 	for(Pixel p: piece){
-	    if(p.STATE != 0){
-		fill[p.Y][p.X] = 0;
-		border[p.Y][p.X] = 0;
-	    }
+	    fill[p.Y][p.X] = 0;
+	    border[p.Y][p.X] = 0;
 	}
     }
     private void makeGhost(){
@@ -112,7 +112,7 @@ public class Grid extends Canvas{
 	}
     }
     public void spawn(){
-	active = new J();
+	active = bag.draw();
     }
     private void clear(){
 	int lines = 0;

@@ -65,23 +65,31 @@ public class Piece implements Iterable<Pixel>{
 	private Piece p;
 	private int row;
 	private int col;
+	private int reported;
 	public PieceIterator(Piece p){
 	    this.p = p;
 	    row = 0;
 	    col = 0;
+	    reported = 0;
 	}
 	public boolean hasNext(){
-	    return row != p.raw.length;
+	    return reported < 4;
 	}
-	public Pixel next(){
-	    int x = col;
-	    int y = row;
-	    int state = p.raw[row][col];
-	    if(++col == p.raw.length){
+	private void advance(){
+	    col++;
+	    if(col == p.raw[0].length){
 		col = 0;
 		row++;
 	    }
-	    return new Pixel(x + p.x, y + p.y, state);
+	}
+	public Pixel next(){
+	    while(p.raw[row][col] == 0){
+		advance();
+	    }
+	    reported++;
+	    Pixel toReturn = new Pixel(col + p.x, row + p.y, p.raw[row][col]);
+	    advance();
+	    return toReturn;
 	}
     }
     
