@@ -8,30 +8,32 @@ public class Main implements Runnable{
     public void run(){
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
-	Grid g = new Grid();
+	PlayField playField = new PlayField();
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	g.addKeyListener(new KeyListener(){
+	playField.addKeyListener(new KeyListener(){
 		public void keyPressed(KeyEvent e){}
 		public void keyReleased(KeyEvent e){}
 		public void keyTyped(KeyEvent e){
 		    if(e.getKeyChar() == 'e'){
-			g.rotate(1);
+			playField.rotate(1);
 		    }else if(e.getKeyChar() == 'q'){
-			g.rotate(3);
+			playField.rotate(3);
 		    }else if(e.getKeyChar() == 'a'){
-			g.shift(-1);
+			playField.shift(-1);
 		    }else if(e.getKeyChar() == 'd'){
-			g.shift(1);
+			playField.shift(1);
 		    }else if(e.getKeyChar() == 's'){
-			g.drop();
+			playField.drop();
 		    }else if(e.getKeyChar() == ' '){
-			g.hardDrop();
+			playField.hardDrop();
 		    }
 		}
 	    });
-	panel.add(g);
-	DisplayBox score = new DisplayBox("score", g.getScore());
+	panel.add(playField);
+	DisplayBox score = new DisplayBox("score", playField.getScore());
+	Holder hold = new Holder();
+	panel.add(hold);
 	panel.add(score);
 	frame.add(panel);
 	frame.pack();
@@ -40,11 +42,12 @@ public class Main implements Runnable{
 		private int state = 0;
 		public void actionPerformed(ActionEvent e){
 		    if(++state == 10){
-			g.repaint();
-			score.update(g.getScore());
+			playField.repaint();
+			hold.repaint();
+			score.update(playField.getScore());
 			state = 0;
 		    }else if (state == 9){
-			g.drop();
+			playField.drop();
 		    }
 		}
 	    }).start();
