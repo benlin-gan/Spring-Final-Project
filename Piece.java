@@ -40,15 +40,20 @@ public class Piece implements Iterable<Pixel>{
 	    raw = rotate(raw);
 	}
     }
-    private int[][] rotate(int[][] input){
+    public static int[][] rotate(int[][] input){
 	//rotation about the center of a square grid
-	int[][] output = new int[input.length][input[0].length];
-	for(int i = 0; i < input.length / 2 + 1; i++){
-	    for(int j = 0; j < input[0].length / 2 + 1; j++){
-		output[i][j] = input[j][input.length - i - 1];
-		output[i][output.length - j - 1] = input[j][i];
-		output[output.length - i - 1][output.length - j - 1] = input[j][input.length - i - 1];
-		output[output.length - i - 1][j] = input[input.length - j - 1][input.length - i - 1];
+	int l = input.length;
+	int[][] output = new int[l][l];
+	for(int row = 0; row < l/2 + 1; row++){
+	    for(int col = row; col < l/2 + 1; col++){
+		int topLeft  = input[row][col];
+		int topRight = input[col][l - row - 1];
+		int bottomRight = input[l - row - 1][l - col - 1];
+		int bottomLeft = input[l - col - 1][row];
+		output[col][l - row - 1] = topLeft;
+		output[l - row - 1][l - col - 1] = topRight;
+		output[l - col - 1][row] = bottomRight;
+		output[row][col] = bottomLeft;
 	    }
 	}
 	return output;
@@ -66,7 +71,7 @@ public class Piece implements Iterable<Pixel>{
 	    col = 0;
 	}
 	public boolean hasNext(){
-	    return (row != p.raw.length - 1) || (col != p.raw[0].length - 1);
+	    return row != p.raw.length;
 	}
 	public Pixel next(){
 	    int x = col;

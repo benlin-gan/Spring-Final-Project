@@ -112,7 +112,7 @@ public class Grid extends Canvas{
 	}
     }
     public void spawn(){
-	active = new T();
+	active = new J();
     }
     private void clear(){
 	int lines = 0;
