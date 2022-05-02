@@ -8,14 +8,13 @@ public class PlayField extends Grid{
     private int score;
     private Piece active;
     private Piece ghost;
-    private Bag bag;
-    public PlayField(){
+    private Holder feeder;
+    public PlayField(Holder feeder){
 	super(24, 14);
 	score = 0;
 	active = null;
 	ghost = null;
-	bag = new Bag();
-
+	this.feeder = feeder;
     }
     public void paint(Graphics g){
 	//main execution path for this class;
@@ -71,7 +70,8 @@ public class PlayField extends Grid{
 	}
     }
     public void spawn(){
-	active = bag.draw();
+	takePiece(feeder.getPiece());
+	feeder.spawn();
     }
     private void clear(){
 	int lines = 0;

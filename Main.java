@@ -8,8 +8,11 @@ public class Main implements Runnable{
     public void run(){
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
-	PlayField playField = new PlayField();
+	JPanel holders = new JPanel();
+	holders.setLayout(new BoxLayout(holders, BoxLayout.Y_AXIS)); 
 	Holder hold = new Holder();
+	Holder next = new Holder();
+	PlayField playField = new PlayField(next);
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	playField.addKeyListener(new KeyListener(){
@@ -37,8 +40,16 @@ public class Main implements Runnable{
 	    });
 	panel.add(playField);
 	DisplayBox score = new DisplayBox("score", playField.getScore());
-	panel.add(hold);
 	panel.add(score);
+	JLabel h = new JLabel("HOLD");
+	h.setFont(new Font("Serif", Font.BOLD, 20));
+	holders.add(h);
+	holders.add(hold);
+	JLabel n = new JLabel("NEXT");
+	n.setFont(new Font("Serif", Font.BOLD, 20));
+	holders.add(n);
+	holders.add(next);
+	panel.add(holders);
 	frame.add(panel);
 	frame.pack();
 	frame.setVisible(true);
@@ -48,6 +59,7 @@ public class Main implements Runnable{
 		    if(++state == 10){
 			playField.repaint();
 			hold.repaint();
+			next.repaint();
 			score.update(playField.getScore());
 			state = 0;
 		    }else if (state == 9){

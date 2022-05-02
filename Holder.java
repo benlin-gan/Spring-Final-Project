@@ -6,7 +6,7 @@ public class Holder extends Grid{
     public Holder(){	
 	super(5, 8);
 	bag = new Bag();
-	piece = new T().cleaned(1);
+	spawn();
     }
     public void paint(Graphics g){
 	fillPiece(piece);
@@ -19,7 +19,7 @@ public class Holder extends Grid{
     public void takePiece(Piece piece){
 	this.piece = piece.cleaned(1);
     }
-    private void spawn(){
-	piece = bag.draw();
+    public void spawn(){
+	piece = bag.draw().cleaned(1);
     }
 }
