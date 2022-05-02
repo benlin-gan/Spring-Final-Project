@@ -9,7 +9,9 @@ public class Main implements Runnable{
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
 	JPanel holders = new JPanel();
-	holders.setLayout(new BoxLayout(holders, BoxLayout.Y_AXIS)); 
+	holders.setLayout(new BoxLayout(holders, BoxLayout.Y_AXIS));
+	JPanel info = new JPanel();
+	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); 
 	Holder hold = new Holder();
 	Holder next = new Holder();
 	PlayField playField = new PlayField(next);
@@ -28,7 +30,7 @@ public class Main implements Runnable{
 		    }else if(e.getKeyChar() == 'd'){
 			playField.shift(1);
 		    }else if(e.getKeyChar() == 's'){
-			playField.drop();
+			playField.softDrop();
 		    }else if(e.getKeyChar() == ' '){
 			playField.hardDrop();
 		    }else if(e.getKeyChar() == 'c'){
@@ -40,14 +42,15 @@ public class Main implements Runnable{
 	    });
 	panel.add(playField);
 	DisplayBox score = new DisplayBox("score", playField.getScore());
-	panel.add(score);
-	JLabel h = new JLabel("HOLD");
-	h.setFont(new Font("Serif", Font.BOLD, 20));
-	holders.add(h);
+	DisplayBox lines = new DisplayBox("lines", playField.getLines());
+	DisplayBox level = new DisplayBox("level", playField.getLevel());
+	info.add(score);
+	info.add(level);
+	info.add(lines);
+	panel.add(info);
+	holders.add(bigger(new JLabel("HOLD")));
 	holders.add(hold);
-	JLabel n = new JLabel("NEXT");
-	n.setFont(new Font("Serif", Font.BOLD, 20));
-	holders.add(n);
+	holders.add(bigger(new JLabel("NEXT")));
 	holders.add(next);
 	panel.add(holders);
 	frame.add(panel);
@@ -61,6 +64,8 @@ public class Main implements Runnable{
 			hold.repaint();
 			next.repaint();
 			score.update(playField.getScore());
+			lines.update(playField.getLines());
+			level.update(playField.getLevel());
 			state = 0;
 		    }else if (state == 9){
 			playField.drop();
@@ -71,5 +76,9 @@ public class Main implements Runnable{
     public static void main(String[] args){
 	Main main = new Main();
 	SwingUtilities.invokeLater(main);
+    }
+    private JLabel bigger(JLabel label){
+	label.setFont(new Font("Serif", Font.BOLD, 20));
+	return label;
     }
 }

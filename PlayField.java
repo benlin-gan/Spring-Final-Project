@@ -6,12 +6,18 @@ import java.util.Comparator;
 public class PlayField extends Grid{
     //composite information about active piece and grid state.
     private int score;
+    private int height;
+    private int level;
+    private int lines;
     private Piece active;
     private Piece ghost;
     private Holder feeder;
     public PlayField(Holder feeder){
 	super(24, 14);
 	score = 0;
+	level = 1;
+	lines = 0;
+	height = 0;
 	active = null;
 	ghost = null;
 	this.feeder = feeder;
@@ -30,9 +36,11 @@ public class PlayField extends Grid{
 	removePiece(ghost);
     }
     private void makeGhost(){
+	height = -1;
 	ghost = active.clone();
 	while(checkState(ghost)){
 	    ghost.drop();
+	    height++;
 	}
 	ghost.undrop();
     }
@@ -54,11 +62,16 @@ public class PlayField extends Grid{
 	active.translate(offset.inverse());
     }
     public void hardDrop(){
+	score += 2 * height;
 	active = ghost;
 	ghost = null;
 	fillPiece(active);
 	spawn();
 	clear();	
+    }
+    public void softDrop(){
+	score++;
+	drop();
     }
     public void drop(){
 	active.drop();
@@ -74,7 +87,7 @@ public class PlayField extends Grid{
 	feeder.spawn();
     }
     private void clear(){
-	int lines = 0;
+	int cleared = 0;
 	for(int i = fill.length - 2; i > 0; i--){
 	    int[] line = fill[i];
 	    boolean shouldClear = true;
@@ -82,7 +95,7 @@ public class PlayField extends Grid{
 		if(line[j] == 0) shouldClear = false;
 	    }
 	    if(shouldClear){
-		lines++;
+		cleared++;
 		for(int j = 1; j < line.length - 1; j++){
 		    line[j] = 0;
 		}
@@ -101,13 +114,20 @@ public class PlayField extends Grid{
 		    return true;
 		}
 	    });
-	if(lines == 1) score += 100;
-	else if(lines == 2) score += 300;
-	else if(lines == 3) score += 500;
-	else if(lines == 4) score += 800;
+	if(cleared == 1) score += 100;
+	else if(cleared == 2) score += 300;
+	else if(cleared == 3) score += 500;
+	else if(cleared == 4) score += 800;
+	lines += cleared;
     }
     public int getScore(){
 	return score;
+    }
+    public int getLines(){
+	return lines;
+    }
+    public int getLevel(){
+	return level;
     }
     protected Piece getPiece(){
 	return active;
