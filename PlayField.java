@@ -11,7 +11,6 @@ public class PlayField extends Grid{
     private Bag bag;
     public PlayField(){
 	super(24, 14);
-	
 	score = 0;
 	active = null;
 	ghost = null;
@@ -30,29 +29,6 @@ public class PlayField extends Grid{
 	super.paint(g);
 	removePiece(active);
 	removePiece(ghost);
-    }
-    private boolean checkState(Piece piece){
-	//returns true if piece is in a valid position;
-	for(Pixel p : piece){
-	    if(fill[p.Y][p.X] != 0) return false;
-	}
-	return true;
-    }
-    private void fillPiece(Piece piece){
-	for(Pixel p : piece){
-	    fill[p.Y][p.X] = p.STATE;
-	}
-    }
-    private void outlinePiece(Piece piece){
-	for(Pixel p : piece){
-	    border[p.Y][p.X] = p.STATE;
-	}
-    }
-    private void removePiece(Piece piece){
-	for(Pixel p: piece){
-	    fill[p.Y][p.X] = 0;
-	    border[p.Y][p.X] = 0;
-	}
     }
     private void makeGhost(){
 	ghost = active.clone();
@@ -132,5 +108,11 @@ public class PlayField extends Grid{
     }
     public int getScore(){
 	return score;
+    }
+    protected Piece getPiece(){
+	return active;
+    }
+    public void takePiece(Piece piece){
+	active = piece.cleaned(5);
     }
 }

@@ -9,6 +9,7 @@ public class Main implements Runnable{
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
 	PlayField playField = new PlayField();
+	Holder hold = new Holder();
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	playField.addKeyListener(new KeyListener(){
@@ -27,12 +28,15 @@ public class Main implements Runnable{
 			playField.drop();
 		    }else if(e.getKeyChar() == ' '){
 			playField.hardDrop();
+		    }else if(e.getKeyChar() == 'c'){
+			Piece temp = playField.getPiece();
+			playField.takePiece(hold.getPiece());
+			hold.takePiece(temp);
 		    }
 		}
 	    });
 	panel.add(playField);
 	DisplayBox score = new DisplayBox("score", playField.getScore());
-	Holder hold = new Holder();
 	panel.add(hold);
 	panel.add(score);
 	frame.add(panel);

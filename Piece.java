@@ -19,6 +19,15 @@ public class Piece implements Iterable<Pixel>{
 	out.rotation = this.rotation;
 	return out;
     }
+    public Piece cleaned(int x){
+	while(rotation != 0){
+	    rotate(1);
+	}
+	Piece toReturn = new Piece(raw, offsets);
+	toReturn.y = 1;
+	toReturn.x = x;
+	return toReturn;
+    }
     public Pair[] generateOffsets(int direction){
 	int begin = rotation;
 	int end = (rotation + direction) % 4;

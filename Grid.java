@@ -1,7 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
-public class Grid extends Canvas{
-    private static final Color[] colors = {Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK};
+public abstract class Grid extends Canvas{
+    private static final Color[] colors = {Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK.darker(), Color.BLACK};
     protected int[][] fill;
     protected int[][] border;
     public Grid(int rows, int columns){
@@ -29,4 +29,28 @@ public class Grid extends Canvas{
 	    }
 	}	
     }
+    protected boolean checkState(Piece piece){
+	//returns true if piece is in a valid position;
+	for(Pixel p : piece){
+	    if(fill[p.Y][p.X] != 0) return false;
+	}
+	return true;
+    }
+    protected void fillPiece(Piece piece){
+	for(Pixel p : piece){
+	    fill[p.Y][p.X] = p.STATE;
+	}
+    }
+    protected void outlinePiece(Piece piece){
+	for(Pixel p : piece){
+	    border[p.Y][p.X] = p.STATE;
+	}
+    }
+    protected void removePiece(Piece piece){
+	for(Pixel p: piece){
+	    fill[p.Y][p.X] = 0;
+	    border[p.Y][p.X] = 0;
+	}
+    }
+    protected abstract Piece getPiece(); //is polymorphic because grids should  have the choice of which piece to send;
 }
