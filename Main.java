@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.SwingUtilities;
 public class Main implements Runnable{
-    public static final int WIDTH = 600;
+    public static final int WIDTH = 1200;
     public static final int HEIGHT = 800;
     public void run(){
     	JFrame frame = new JFrame("My Spring Final Project");
@@ -55,7 +55,6 @@ public class Main implements Runnable{
 	panel.add(holders);
 	frame.add(panel);
 	frame.pack();
-	frame.setVisible(true);
 	new Timer(100, new ActionListener(){
 		private int state = 0;
 		public void actionPerformed(ActionEvent e){
@@ -70,8 +69,10 @@ public class Main implements Runnable{
 		    }else if (state == 9){
 			playField.drop();
 		    }
+		    frame.pack();
 		}
 	    }).start();
+	    frame.setVisible(true);
     }
     public static void main(String[] args){
 	Main main = new Main();
