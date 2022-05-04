@@ -9,8 +9,9 @@ public class Holder extends Grid{
 	spawn();
     }
     public void paint(Graphics g){
+	Graphics2D g2 = (Graphics2D) g;
 	fillPiece(piece);
-	super.paint(g);
+	super.paint(g2);
 	removePiece(piece);
     }
     protected Piece getPiece(){

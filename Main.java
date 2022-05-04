@@ -6,6 +6,7 @@ public class Main implements Runnable{
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 800;
     public void run(){
+	System.setProperty("sun.java2d.opengl", "true");
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
 	JPanel holders = new JPanel();
