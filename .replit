@@ -1,1 +1,1 @@
-run = ["javac *.java", "java -Dsun.java2d.opengl Main"]
+run = ["javac *.java", "java -Dsun.java2d.opengl=true Main"]
