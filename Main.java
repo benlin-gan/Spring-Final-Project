@@ -5,6 +5,8 @@ import javax.swing.SwingUtilities;
 public class Main implements Runnable{
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 800;
+    public static final double FPS = 1.0;
+    private static Clock clock = new Clock();
     public void run(){
 	System.setProperty("sun.java2d.opengl", "true");
     	JFrame frame = new JFrame("My Spring Final Project");
@@ -15,7 +17,7 @@ public class Main implements Runnable{
 	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); 
 	Holder hold = new Holder();
 	Holder next = new Holder();
-	PlayField playField = new PlayField(next);
+	PlayField playField = new PlayField(next, clock);
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	playField.addKeyListener(new KeyListener(){
@@ -56,20 +58,16 @@ public class Main implements Runnable{
 	panel.add(holders);
 	frame.add(panel);
 	frame.pack();
-	new Timer(100, new ActionListener(){
-		private int state = 0;
+	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		    if(++state == 10){
-			playField.repaint();
-			hold.repaint();
-			next.repaint();
-			score.update(playField.getScore());
-			lines.update(playField.getLines());
-			level.update(playField.getLevel());
-			state = 0;
-		    }else if (state == 9){
-			playField.drop();
-		    }
+		    clock.update(1/FPS);
+		    playField.repaint();
+		    hold.repaint();
+		    next.repaint();
+		    score.update(playField.getScore());
+		    lines.update(playField.getLines());
+		    level.update(playField.getLevel());
+		    playField.drop();
 		    frame.pack();
 		}
 	    }).start();

@@ -1,32 +1,20 @@
 import java.util.Iterator;
 public class Piece implements Iterable<Pixel>{
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private int rotation;
     private Pair[][] offsets;
     private int[][] raw;
+    private double lastUpdate;
     public Piece(int[][] raw, Pair[][] offsets){
-	y = 1;
-	x = 5;
-	rotation = 0;
 	this.raw = raw;
 	this.offsets = offsets;
     }
-    public Piece clone(){
-	Piece out = new Piece(raw, offsets);
-	out.x = this.x;
-	out.y = this.y;
-	out.rotation = this.rotation;
-	return out;
-    }
-    public Piece cleaned(int x){
-	while(rotation != 0){
-	    rotate(1);
-	}
-	Piece toReturn = new Piece(raw, offsets);
-	toReturn.y = 1;
-	toReturn.x = x;
-	return toReturn;
+    public Piece(Piece p){
+	this.x = p.x;
+	this.y = p.y;
+	this.raw = p.raw;
+	this.offsets = p.offsets;
     }
     public Pair[] generateOffsets(int direction){
 	int begin = rotation;
@@ -41,6 +29,11 @@ public class Piece implements Iterable<Pixel>{
 	x += offset.X;
 	y += offset.Y;
     }
+    public void setLocation(Pair coords){
+	//extremely cargo culty use of "encapsulation" here.
+	x = coords.X;
+	y = coords.Y;
+    } 
     public void rotate(int direction){
 	//mutator for rotation and raw
 	rotation = (rotation + direction) % 4;
@@ -96,25 +89,20 @@ public class Piece implements Iterable<Pixel>{
 		advance();
 	    }
 	    reported++;
-	    Pixel toReturn = new Pixel(col + p.x, row + p.y, p.raw[row][col]);
+	    Pixel toReturn = new Pixel(col + (int) p.x, row + (int) p.y, p.raw[row][col]);
 	    advance();
 	    return toReturn;
 	}
-    }
-    
-    public int getX(){
-	return x;
-    }
-    public int getY(){
-	return y;
-    }
+    }    
     public int[][] getRaw(){
 	return raw;
     }
-    public void drop(){
-	y++;
+    public void synchronize(double time){
+	lastUpdate = time;
     }
-    public void undrop(){
-	y--;
+    public void drop(double time, double gravity){
+	y += (time - lastUpdate) / gravity / 60;
+	synchronize(time);
+	//time of physics to simulate divided by cells per frame divided by frames per second;
     }
 }

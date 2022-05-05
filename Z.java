@@ -5,6 +5,5 @@ public class Z extends JLSTZ{
 		new int[]{0, 5, 5},
 		new int[]{0, 0, 0},
 	    });
-
     }
 }

@@ -18,9 +18,11 @@ public class Holder extends Grid{
 	return piece;
     }
     public void takePiece(Piece piece){
-	this.piece = piece.cleaned(1);
+	this.piece = piece;
+	this.piece.setLocation(new Pair(1, 1));
     }
     public void spawn(){
-	piece = bag.draw().cleaned(1);
+	piece = bag.draw();
+	this.piece.setLocation(new Pair(1,1));
     }
 }

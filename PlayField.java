@@ -12,21 +12,23 @@ public class PlayField extends Grid{
     private Piece active;
     private Piece ghost;
     private Holder feeder;
-    public PlayField(Holder feeder){
+    private Clock clock;
+    private static final double[] CURVE = {0.01667, 0.021017, 0.026977}; //cells per frame
+    public PlayField(Holder feeder, Clock clock){
 	super(24, 14);
 	score = 0;
-	level = 1;
+	level = 3;
 	lines = 0;
 	height = 0;
 	active = null;
-	ghost = null;
+	ghost = null;    
+	this.clock = clock;
 	this.feeder = feeder;
     }
     public void paint(Graphics g){
 	//main execution path for this class;
 	//called as a result of repaint() in Main;
 	Graphics2D g2 = (Graphics2D) g;
-	//g2.setStroke(new BasicStroke());
 	if(active == null) spawn();
 	makeGhost();
 	outlinePiece(ghost);
@@ -36,13 +38,15 @@ public class PlayField extends Grid{
 	removePiece(ghost);
     }
     private void makeGhost(){
-	height = -1;
-	ghost = active.clone();
-	while(checkState(ghost)){
-	    ghost.drop();
-	    height++;
+	ghost = new Piece(active);
+	ghost.translate(new Pair(0, cellsBelow()));
+    }
+    private int cellsBelow(){
+	int out = 0;
+	while(checkState(active, out)){
+	    out++;
 	}
-	ghost.undrop();
+	return out - 1;
     }
     public void rotate(int direction){
 	Pair[] offsets = active.generateOffsets(direction);
@@ -62,7 +66,7 @@ public class PlayField extends Grid{
 	active.translate(offset.inverse());
     }
     public void hardDrop(){
-	score += 2 * height;
+	score += 2 * cellsBelow();
 	active = ghost;
 	ghost = null;
 	fillPiece(active);
@@ -71,19 +75,19 @@ public class PlayField extends Grid{
     }
     public void softDrop(){
 	score++;
-	drop();
+	active.drop(clock.getTime(), CURVE[level - 1] / 2.0);
     }
     public void drop(){
-	active.drop();
-	if(!checkState(active)){
-	    active.undrop();
-	    fillPiece(active);
-	    clear();
+	active.drop(clock.getTime(), CURVE[level - 1]);
+	if(cellsBelow() == 0){
 	    spawn();
+	    clear();
 	}
     }
     public void spawn(){
 	takePiece(feeder.getPiece());
+	active.setLocation(new Pair(5, 1));
+	active.synchronize(clock.getTime());
 	feeder.spawn();
     }
     private void clear(){
@@ -133,6 +137,8 @@ public class PlayField extends Grid{
 	return active;
     }
     public void takePiece(Piece piece){
-	active = piece.cleaned(5);
+	active = piece;
+	active.setLocation(new Pair(5, 1));
+	active.synchronize(clock.getTime());
     }
 }

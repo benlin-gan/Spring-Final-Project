@@ -36,6 +36,13 @@ public abstract class Grid extends Canvas{
 	}
 	return true;
     }
+    protected boolean checkState(Piece piece, int y){
+	//returns true if piece is in a valid position;
+	for(Pixel p : piece){
+	    if(fill[p.Y + y][p.X] != 0) return false;
+	}
+	return true;
+    }
     protected void fillPiece(Piece piece){
 	for(Pixel p : piece){
 	    fill[p.Y][p.X] = p.STATE;
