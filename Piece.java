@@ -101,7 +101,8 @@ public class Piece implements Iterable<Pixel>{
 	lastUpdate = time;
     }
     public void drop(double time, double gravity){
-	y += (time - lastUpdate) / gravity / 60;
+	y += (time - lastUpdate) / gravity / 10.0;
+	System.out.println(y);
 	synchronize(time);
 	//time of physics to simulate divided by cells per frame divided by frames per second;
     }

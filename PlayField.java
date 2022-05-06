@@ -13,23 +13,23 @@ public class PlayField extends Grid{
     private Piece ghost;
     private Holder feeder;
     private Clock clock;
-    private static final double[] CURVE = {0.01667, 0.021017, 0.026977}; //cells per frame
+    private static final double[] CURVE = {0.01667, 0.021017, 0.026977, 0.2}; //cells per frame
     public PlayField(Holder feeder, Clock clock){
 	super(24, 14);
 	score = 0;
-	level = 3;
+	level = 1;
 	lines = 0;
 	height = 0;
-	active = null;
-	ghost = null;    
-	this.clock = clock;
 	this.feeder = feeder;
+	this.clock = clock;
+	spawn();
+	ghost = null;
+
     }
     public void paint(Graphics g){
 	//main execution path for this class;
 	//called as a result of repaint() in Main;
 	Graphics2D g2 = (Graphics2D) g;
-	if(active == null) spawn();
 	makeGhost();
 	outlinePiece(ghost);
 	fillPiece(active);
@@ -80,6 +80,7 @@ public class PlayField extends Grid{
     public void drop(){
 	active.drop(clock.getTime(), CURVE[level - 1]);
 	if(cellsBelow() == 0){
+	    fillPiece(active);
 	    spawn();
 	    clear();
 	}

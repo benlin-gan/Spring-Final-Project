@@ -5,7 +5,7 @@ import javax.swing.SwingUtilities;
 public class Main implements Runnable{
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 800;
-    public static final double FPS = 1.0;
+    public static final double FPS = 60.0;
     private static Clock clock = new Clock();
     public void run(){
 	System.setProperty("sun.java2d.opengl", "true");
@@ -57,21 +57,26 @@ public class Main implements Runnable{
 	holders.add(next);
 	panel.add(holders);
 	frame.add(panel);
-	frame.pack();
+	new Timer((int) (100/FPS), new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+		    clock.update(0.1/FPS);
+		    playField.drop();
+		}
+	    }).start();
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		    clock.update(1/FPS);
 		    playField.repaint();
 		    hold.repaint();
 		    next.repaint();
 		    score.update(playField.getScore());
 		    lines.update(playField.getLines());
 		    level.update(playField.getLevel());
-		    playField.drop();
+		    
+		    
 		    frame.pack();
 		}
 	    }).start();
-	    frame.setVisible(true);
+	frame.setVisible(true);
     }
     public static void main(String[] args){
 	Main main = new Main();

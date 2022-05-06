@@ -27,7 +27,8 @@ public abstract class Grid extends Canvas{
 		g2.setPaint(colors[border[i][j]].brighter());
 		g2.draw(box);
 	    }
-	}	
+	}
+	Toolkit.getDefaultToolkit().sync();
     }
     protected boolean checkState(Piece piece){
 	//returns true if piece is in a valid position;
