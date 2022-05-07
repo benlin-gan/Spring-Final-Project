@@ -13,7 +13,6 @@ public class PlayField extends Grid{
     private Piece ghost;
     private Holder feeder;
     private Clock clock;
-    private static final double[] CURVE = {0.01667, 0.021017, 0.026977, 0.2}; //cells per frame
     public PlayField(Holder feeder, Clock clock){
 	super(24, 14);
 	score = 0;
@@ -75,15 +74,18 @@ public class PlayField extends Grid{
     }
     public void softDrop(){
 	score++;
-	active.drop(clock.getTime(), CURVE[level - 1] / 2.0);
+	active.drop(clock.getTime(), getGravity()/2);
     }
     public void drop(){
-	active.drop(clock.getTime(), CURVE[level - 1]);
+	active.drop(clock.getTime(), getGravity());
 	if(cellsBelow() == 0){
 	    fillPiece(active);
 	    spawn();
 	    clear();
 	}
+    }
+    private double getGravity(){
+	    return Math.pow((0.8 - ((level - 1) * 0.007)), (level - 1));
     }
     public void spawn(){
 	takePiece(feeder.getPiece());
