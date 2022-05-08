@@ -31,6 +31,9 @@ public class Piece implements Iterable<Pixel>{
     }
     public void setLocation(Pair coords){
 	//extremely cargo culty use of "encapsulation" here.
+	while(rotation != 0){
+	    rotate(1);
+	}
 	x = coords.X;
 	y = coords.Y;
     } 
@@ -101,9 +104,10 @@ public class Piece implements Iterable<Pixel>{
 	lastUpdate = time;
     }
     public void drop(double time, double gravity){
-	y += (time - lastUpdate) / gravity / 10.0;
-	System.out.println(y);
+	y += (time - lastUpdate) / gravity;
 	synchronize(time);
-	//time of physics to simulate divided by cells per frame divided by frames per second;
+    }
+    public boolean locked(double time){
+	return (time - lastUpdate) > 0.5;
     }
 }

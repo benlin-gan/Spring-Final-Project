@@ -65,7 +65,7 @@ public class PlayField extends Grid{
 	active.translate(offset.inverse());
     }
     public void hardDrop(){
-	score += 2 * cellsBelow();
+	score += 2 * cellsBelow() * level;
 	active = ghost;
 	ghost = null;
 	fillPiece(active);
@@ -73,19 +73,24 @@ public class PlayField extends Grid{
 	clear();	
     }
     public void softDrop(){
-	score++;
-	active.drop(clock.getTime(), getGravity()/2);
+	if(cellsBelow() > 0){
+	    score += level;
+	    active.translate(new Pair(0, 1));
+	}
     }
     public void drop(){
-	active.drop(clock.getTime(), getGravity());
 	if(cellsBelow() == 0){
-	    fillPiece(active);
-	    spawn();
-	    clear();
+	    if(active.locked(clock.getTime())){
+		fillPiece(active);
+		spawn();
+		clear();
+	    }
+	}else{
+	    active.drop(clock.getTime(), getGravity());
 	}
     }
     private double getGravity(){
-	    return Math.pow((0.8 - ((level - 1) * 0.007)), (level - 1));
+	return Math.pow((0.8 - ((level - 1) * 0.007)), (level - 1));
     }
     public void spawn(){
 	takePiece(feeder.getPiece());
@@ -121,11 +126,15 @@ public class PlayField extends Grid{
 		    return true;
 		}
 	    });
-	if(cleared == 1) score += 100;
-	else if(cleared == 2) score += 300;
-	else if(cleared == 3) score += 500;
-	else if(cleared == 4) score += 800;
+	if(cleared == 1) score += 100 * level;
+	else if(cleared == 2) score += 300 * level;
+	else if(cleared == 3) score += 500 * level;
+	else if(cleared == 4) score += 800 * level;
 	lines += cleared;
+	levelUp();
+    }
+    private void levelUp(){
+	level = lines / 10 + 1;
     }
     public int getScore(){
 	return score;

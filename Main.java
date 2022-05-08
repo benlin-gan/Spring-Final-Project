@@ -57,9 +57,9 @@ public class Main implements Runnable{
 	holders.add(next);
 	panel.add(holders);
 	frame.add(panel);
-	new Timer((int) (100/FPS), new ActionListener(){
+	new Timer((int) (500/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		    clock.update(0.1/FPS);
+		    clock.update(0.5/FPS);
 		    playField.drop();
 		}
 	    }).start();
@@ -71,8 +71,9 @@ public class Main implements Runnable{
 		    score.update(playField.getScore());
 		    lines.update(playField.getLines());
 		    level.update(playField.getLevel());
-		    
-		    
+		    score.repaint();
+		    lines.repaint();
+		    level.repaint();
 		    frame.pack();
 		}
 	    }).start();
