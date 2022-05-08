@@ -1,5 +1,6 @@
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Toolkit;
 public class DisplayBox extends JLabel{
     private String name;
     public DisplayBox(String name, Object o){

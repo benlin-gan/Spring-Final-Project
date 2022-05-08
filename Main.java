@@ -66,14 +66,13 @@ public class Main implements Runnable{
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 		    playField.repaint();
+		    holders.repaint();
 		    hold.repaint();
 		    next.repaint();
 		    score.update(playField.getScore());
 		    lines.update(playField.getLines());
 		    level.update(playField.getLevel());
-		    score.repaint();
-		    lines.repaint();
-		    level.repaint();
+		    info.repaint();
 		    frame.pack();
 		}
 	    }).start();
