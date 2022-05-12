@@ -50,14 +50,10 @@ public class Main implements Runnable{
 	panel.add(info);
 	panel.add(sidebar);
 	frame.add(panel);
-	new Timer((int) (500/FPS), new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-		    clock.update(0.5/FPS);
-		    playField.drop();
-		}
-	    }).start();
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			clock.update(1.0/FPS);
+			playField.drop();
 			playField.setVisible(!playField.getDone());
 			playField.repaint();
 			sidebar.repaint();
