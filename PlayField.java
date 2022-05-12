@@ -10,6 +10,7 @@ public class PlayField extends Grid{
     private Piece ghost;
     private Holder feeder;
     private Clock clock;
+    private boolean done;
     public PlayField(Holder feeder, Clock clock){
 	super(24, 14);
 	score = 0;
@@ -17,6 +18,7 @@ public class PlayField extends Grid{
 	lines = 0;
 	this.feeder = feeder;
 	this.clock = clock;
+	done = false;
 	spawn();
 	ghost = null;
 
@@ -91,6 +93,7 @@ public class PlayField extends Grid{
     public void spawn(){
 	takePiece(feeder.getPiece());
 	active.setLocation(new Pair(5, 1));
+	if(!checkState(active)) done = true;
 	active.synchronize(clock.getTime());
 	feeder.spawn();
     }
@@ -152,5 +155,8 @@ public class PlayField extends Grid{
 		active.setLocation(new Pair(5, 1));
 	}
 	active.synchronize(clock.getTime());
+    }
+    public boolean getDone(){
+	    return done;
     }
 }

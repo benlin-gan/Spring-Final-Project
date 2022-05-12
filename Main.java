@@ -58,10 +58,11 @@ public class Main implements Runnable{
 	    }).start();
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			playField.setVisible(!playField.getDone());
 			playField.repaint();
 			sidebar.repaint();
 			score.update(playField.getScore());
-		 	lines.update(playField.getLines());
+			lines.update(playField.getLines());
 			level.update(playField.getLevel());
 			info.repaint();
 			Toolkit.getDefaultToolkit().sync();
