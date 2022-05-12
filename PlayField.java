@@ -9,15 +9,17 @@ public class PlayField extends Grid{
     private Piece active;
     private Piece ghost;
     private Holder feeder;
+    private Log log;
     private Clock clock;
     private boolean done;
-    public PlayField(Holder feeder, Clock clock){
+    public PlayField(Holder feeder, Clock clock, Log log){
 	super(24, 14);
 	score = 0;
 	level = 1;
 	lines = 0;
 	this.feeder = feeder;
 	this.clock = clock;
+	this.log = log;
 	done = false;
 	spawn();
 	ghost = null;
@@ -125,7 +127,10 @@ public class PlayField extends Grid{
 		    return true;
 		}
 	    });
-	if(cleared == 1) score += 100 * level;
+	if(cleared == 1) {
+		score += 100 * level;
+		log.setMessage("Single!");
+	}
 	else if(cleared == 2) score += 300 * level;
 	else if(cleared == 3) score += 500 * level;
 	else if(cleared == 4) score += 800 * level;

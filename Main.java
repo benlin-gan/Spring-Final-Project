@@ -7,14 +7,15 @@ public class Main implements Runnable{
     public static final int HEIGHT = 800;
     public static final double FPS = 60.0;
     private static Clock clock = new Clock();
+    private static Log log = new Log(clock);
     public void run(){
 	System.setProperty("sun.java2d.opengl", "true");
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
-	Sidebar sidebar = new Sidebar();
+	Sidebar sidebar = new Sidebar(log);
 	JPanel info = new JPanel();
 	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); 
-	PlayField playField = new PlayField(sidebar.getNext(), clock);
+	PlayField playField = new PlayField(sidebar.getNext(), clock, log);
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	playField.addKeyListener(new KeyListener(){
