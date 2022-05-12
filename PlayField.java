@@ -1,12 +1,9 @@
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Comparator;
 public class PlayField extends Grid{
     //composite information about active piece and grid state.
     private int score;
-    private int height;
     private int level;
     private int lines;
     private Piece active;
@@ -18,7 +15,6 @@ public class PlayField extends Grid{
 	score = 0;
 	level = 1;
 	lines = 0;
-	height = 0;
 	this.feeder = feeder;
 	this.clock = clock;
 	spawn();
@@ -32,7 +28,7 @@ public class PlayField extends Grid{
 	makeGhost();
 	outlinePiece(ghost);
 	fillPiece(active);
-	super.paint(g);
+	super.paint(g2);
 	removePiece(active);
 	removePiece(ghost);
     }

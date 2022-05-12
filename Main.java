@@ -11,13 +11,10 @@ public class Main implements Runnable{
 	System.setProperty("sun.java2d.opengl", "true");
     	JFrame frame = new JFrame("My Spring Final Project");
 	JPanel panel = new JPanel();
-	JPanel holders = new JPanel();
-	holders.setLayout(new BoxLayout(holders, BoxLayout.Y_AXIS));
+	Sidebar sidebar = new Sidebar();
 	JPanel info = new JPanel();
 	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); 
-	Holder hold = new Holder();
-	Holder next = new Holder();
-	PlayField playField = new PlayField(next, clock);
+	PlayField playField = new PlayField(sidebar.getNext(), clock);
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	playField.addKeyListener(new KeyListener(){
@@ -38,8 +35,8 @@ public class Main implements Runnable{
 			playField.hardDrop();
 		    }else if(e.getKeyChar() == 'c'){
 			Piece temp = playField.getPiece();
-			playField.takePiece(hold.getPiece());
-			hold.takePiece(temp);
+			playField.takePiece(sidebar.getHold().getPiece());
+			sidebar.getHold().takePiece(temp);
 		    }
 		}
 	    });
@@ -51,11 +48,7 @@ public class Main implements Runnable{
 	info.add(level);
 	info.add(lines);
 	panel.add(info);
-	holders.add(bigger(new JLabel("HOLD")));
-	holders.add(hold);
-	holders.add(bigger(new JLabel("NEXT")));
-	holders.add(next);
-	panel.add(holders);
+	panel.add(sidebar);
 	frame.add(panel);
 	new Timer((int) (500/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -65,15 +58,14 @@ public class Main implements Runnable{
 	    }).start();
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		    playField.repaint();
-		    holders.repaint();
-		    hold.repaint();
-		    next.repaint();
-		    score.update(playField.getScore());
-		    lines.update(playField.getLines());
-		    level.update(playField.getLevel());
-		    info.repaint();
-		    frame.pack();
+			playField.repaint();
+			sidebar.repaint();
+			score.update(playField.getScore());
+		 	lines.update(playField.getLines());
+			level.update(playField.getLevel());
+			info.repaint();
+			Toolkit.getDefaultToolkit().sync();
+			frame.pack();
 		}
 	    }).start();
 	frame.setVisible(true);
@@ -81,9 +73,5 @@ public class Main implements Runnable{
     public static void main(String[] args){
 	Main main = new Main();
 	SwingUtilities.invokeLater(main);
-    }
-    private JLabel bigger(JLabel label){
-	label.setFont(new Font("Serif", Font.BOLD, 20));
-	return label;
     }
 }
