@@ -12,7 +12,7 @@ public class Sidebar extends JPanel{
 	public Sidebar(){
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		hold = new Holder();
-		next = new Holder();
+		next = new Holder(new Bag());
 		hText = new JLabel("HOLD");
 		hText.setFont(new Font("Serif", Font.BOLD, 20));
 		this.add(hText);

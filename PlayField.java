@@ -145,8 +145,12 @@ public class PlayField extends Grid{
 	return active;
     }
     public void takePiece(Piece piece){
-	active = piece;
-	active.setLocation(new Pair(5, 1));
+	if(piece == null){
+		spawn();
+	}else{
+		active = piece;
+		active.setLocation(new Pair(5, 1));
+	}
 	active.synchronize(clock.getTime());
     }
 }
