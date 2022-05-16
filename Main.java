@@ -58,15 +58,14 @@ public class Main implements Runnable{
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			clock.update(1.0/FPS);
-			playField.drop();
-			playField.setVisible(!playField.getDone());
-			playField.repaint();
 			sidebar.repaint();
 			score.update(playField.getScore());
 			lines.update(playField.getLines());
 			level.update(playField.getLevel());
 			info.repaint();
-			Toolkit.getDefaultToolkit().sync();
+			playField.drop();
+			playField.setVisible(!playField.getDone());
+			playField.repaint();
 			frame.pack();
 		}
 	    }).start();

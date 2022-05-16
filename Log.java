@@ -8,13 +8,13 @@ public class Log extends Canvas{
 	public Log(Clock clock){
 		setSize(100, 100);
 		this.clock = clock;
+		this.setFont(new Font("Serif", Font.BOLD, 30));
 	}
 	public void setMessage(String message){
 		this.message = message;
 		timestamp = clock.getTime();
 	}
 	public void paint(Graphics g){
-		g.setFont(new Font("Serif", Font.BOLD, 30));
 		if(clock.getTime()  - timestamp > 2.0){
 			message = null;
 		}
