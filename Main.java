@@ -35,9 +35,13 @@ public class Main implements Runnable{
 		    }else if(e.getKeyChar() == ' '){
 			playField.hardDrop();
 		    }else if(e.getKeyChar() == 'c'){
-			Piece temp = playField.getPiece();
-			playField.takePiece(sidebar.getHold().getPiece());
+			if(playField.holdable()){
+				playField.setHoldable();
+				Piece temp = playField.getPiece();
+		playField.takePiece(sidebar.getHold().getPiece());
 			sidebar.getHold().takePiece(temp);
+			}
+			
 		    }
 		}
 	    });

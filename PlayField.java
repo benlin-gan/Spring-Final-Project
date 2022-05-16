@@ -12,6 +12,7 @@ public class PlayField extends Grid{
     private Log log;
     private Clock clock;
     private boolean done;
+    private boolean canHold;
     public PlayField(Holder feeder, Clock clock, Log log){
 	super(24, 14);
 	score = 0;
@@ -20,6 +21,7 @@ public class PlayField extends Grid{
 	this.feeder = feeder;
 	this.clock = clock;
 	this.log = log;
+	canHold = true;
 	done = false;
 	spawn();
 	ghost = null;
@@ -98,6 +100,7 @@ public class PlayField extends Grid{
 	if(!checkState(active)) done = true;
 	active.synchronize(clock.getTime());
 	feeder.spawn();
+	canHold = true;
     }
     private void clear(){
 	int cleared = 0;
@@ -131,9 +134,18 @@ public class PlayField extends Grid{
 		score += 100 * level;
 		log.setMessage("Single!");
 	}
-	else if(cleared == 2) score += 300 * level;
-	else if(cleared == 3) score += 500 * level;
-	else if(cleared == 4) score += 800 * level;
+	else if(cleared == 2){
+		score += 300 * level;
+		log.setMessage("Double!");
+	} 
+	else if(cleared == 3){
+		score += 500 * level;
+		log.setMessage("Triple!");
+	}
+	else if(cleared == 4){
+		score += 800 * level;
+		log.setMessage("Tetris!");
+	}
 	lines += cleared;
 	levelUp();
     }
@@ -163,5 +175,11 @@ public class PlayField extends Grid{
     }
     public boolean getDone(){
 	    return done;
+    }
+    public boolean holdable(){
+	    return canHold;
+    }
+    public void setHoldable(){
+	    canHold = false;
     }
 }

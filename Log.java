@@ -1,5 +1,6 @@
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.Font;
 public class Log extends Canvas{
 	private String message;
 	private Clock clock;
@@ -13,11 +14,12 @@ public class Log extends Canvas{
 		timestamp = clock.getTime();
 	}
 	public void paint(Graphics g){
+		g.setFont(new Font("Serif", Font.BOLD, 30));
 		if(clock.getTime()  - timestamp > 2.0){
 			message = null;
 		}
 		if(message != null){
-			g.drawString(message, 0, 10);
+			g.drawString(message, 0, 30);
 		}
 
 	}
