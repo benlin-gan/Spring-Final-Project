@@ -13,11 +13,11 @@ public class Holder extends Grid{
     public void paint(Graphics g){
 	Graphics2D g2 = (Graphics2D) g;
 	if(piece != null){
-		fillPiece(piece);
+	    fillPiece(piece);
 	}
 	super.paint(g2);
 	if(piece != null){
-		removePiece(piece);
+	    removePiece(piece);
 	}	
     }
     protected Piece getPiece(){

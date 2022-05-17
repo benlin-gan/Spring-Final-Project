@@ -35,10 +35,10 @@ public class Main implements Runnable{
 			playField.hardDrop();
 		    }else if(e.getKeyChar() == 'c'){
 			if(playField.holdable()){
-				playField.setHoldable();
-				Piece temp = playField.getPiece();
-		playField.takePiece(sidebar.getHold().getPiece());
-			sidebar.getHold().takePiece(temp);
+			    playField.setHoldable();
+			    Piece temp = playField.getPiece();
+			    playField.takePiece(sidebar.getHold().getPiece());
+			    sidebar.getHold().takePiece(temp);
 			}
 			
 		    }
@@ -56,17 +56,17 @@ public class Main implements Runnable{
 	frame.add(panel);
 	new Timer((int) (1000/FPS), new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			clock.update(1.0/FPS);
-			sidebar.repaint();
-			score.update(playField.getScore());
-			lines.update(playField.getLines());
-			level.update(playField.getLevel());
-			info.repaint();
-			playField.drop();
-	                	playField.setVisible(!playField.getDone());
-			sidebar.setVisible(!playField.getDone());
-			playField.repaint();
-			frame.pack();
+		    clock.update(1.0/FPS);
+		    sidebar.repaint();
+		    score.update(playField.getScore());
+		    lines.update(playField.getLines());
+		    level.update(playField.getLevel());
+		    info.repaint();
+		    playField.drop();
+		    playField.setVisible(!playField.getDone());
+		    sidebar.setVisible(!playField.getDone());
+		    playField.repaint();
+		    frame.pack();
 		}
 	    }).start();
 	frame.setVisible(true);

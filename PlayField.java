@@ -131,20 +131,20 @@ public class PlayField extends Grid{
 		}
 	    });
 	if(cleared == 1) {
-		score += 100 * level;
-		log.setMessage("Single!");
+	    score += 100 * level;
+	    log.setMessage("Single!");
 	}
 	else if(cleared == 2){
-		score += 300 * level;
-		log.setMessage("Double!");
+	    score += 300 * level;
+	    log.setMessage("Double!");
 	} 
 	else if(cleared == 3){
-		score += 500 * level;
-		log.setMessage("Triple!");
+	    score += 500 * level;
+	    log.setMessage("Triple!");
 	}
 	else if(cleared == 4){
-		score += 800 * level;
-		log.setMessage("Tetris!");
+	    score += 800 * level;
+	    log.setMessage("Tetris!");
 	}
 	lines += cleared;
 	levelUp();
@@ -166,20 +166,20 @@ public class PlayField extends Grid{
     }
     public void takePiece(Piece piece){
 	if(piece == null){
-		spawn();
+	    spawn();
 	}else{
-		active = piece;
-		active.setLocation(new Pair(5, 1));
+	    active = piece;
+	    active.setLocation(new Pair(5, 1));
 	}
 	active.synchronize(clock.getTime());
     }
     public boolean getDone(){
-	    return done;
+	return done;
     }
     public boolean holdable(){
-	    return canHold;
+	return canHold;
     }
     public void setHoldable(){
-	    canHold = false;
+	canHold = false;
     }
 }

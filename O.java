@@ -10,8 +10,7 @@ public class O extends Piece{
 		new Pair[]{new Pair(0,-1)},
 		new Pair[]{new Pair(-1,-1)},
 		new Pair[]{new Pair(-1,0)}
-	    }
-	    );
+	    });
     }
 }
     

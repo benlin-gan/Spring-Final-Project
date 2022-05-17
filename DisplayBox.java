@@ -6,9 +6,9 @@ public class DisplayBox extends Canvas{
     private String name;
     private String display;
     public DisplayBox(String display){
-	    setSize(150, 40);
-	    this.display = display;
-	    this.setFont(new Font("Serif", Font.BOLD, 20));
+	setSize(150, 40);
+	this.display = display;
+	this.setFont(new Font("Serif", Font.BOLD, 20));
     }
     public DisplayBox(String name, Object o){
 	setSize(150, 40);
