@@ -64,7 +64,7 @@ public class Main implements Runnable{
 			level.update(playField.getLevel());
 			info.repaint();
 			playField.drop();
-			playField.setVisible(!playField.getDone());
+	                	playField.setVisible(!playField.getDone());
 			playField.repaint();
 			frame.pack();
 		}
