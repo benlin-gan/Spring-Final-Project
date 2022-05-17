@@ -1,5 +1,4 @@
 import java.awt.*;
-import javax.swing.*;
 public abstract class Grid extends Canvas{
     private static final Color[] colors = {Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK.darker(), Color.BLACK};
     protected int[][] fill;

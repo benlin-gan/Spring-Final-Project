@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.SwingUtilities;
 public class Main implements Runnable{
@@ -65,6 +64,7 @@ public class Main implements Runnable{
 			info.repaint();
 			playField.drop();
 	                	playField.setVisible(!playField.getDone());
+			sidebar.setVisible(!playField.getDone());
 			playField.repaint();
 			frame.pack();
 		}
