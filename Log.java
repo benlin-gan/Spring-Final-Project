@@ -2,6 +2,8 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Font;
 public class Log extends Canvas{
+    //log that reports messages to the user;
+    //messages fade away after a while;
     private String message;
     private Clock clock;
     private double timestamp;

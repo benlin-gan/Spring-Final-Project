@@ -1,4 +1,5 @@
 public class JLSTZ extends Piece{
+    //J, L, S, T, and Z pieces all have the same rotation offsets;
     public JLSTZ(int[][] raw){
 	super(raw,
 	    new Pair[][]{

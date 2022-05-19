@@ -2,17 +2,20 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
 public class PlayField extends Grid{
-    //composite information about active piece and grid state.
+    //composite information about the active piece into the grid state 
     private int score;
     private int level;
     private int lines;
     private Piece active;
     private Piece ghost;
-    private Holder feeder;
+    private Holder feeder; 
     private Log log;
+    //feeder and log have graphical representations, and so must exist indpendently
+    //but their behavior is closely coupled to that of the PlayField, so it needs to hold some their refrences
+    //this is why OOP is kind of a cargo cult
     private Clock clock;
     private boolean done;
-    private boolean canHold;
+    private boolean canHold; //can only hold once between piece locks
     private boolean majorCombo;
     public PlayField(Holder feeder, Clock clock, Log log){
 	super(24, 14);
@@ -43,6 +46,7 @@ public class PlayField extends Grid{
     private void makeGhost(){
 	ghost = new Piece(active);
 	ghost.translate(new Pair(0, cellsBelow()));
+	//a copy of the piece translated down to where it hits the ground;
     }
     private int cellsBelow(){
 	int out = 0;
@@ -65,14 +69,14 @@ public class PlayField extends Grid{
     public void shift(int x){
 	Pair offset = new Pair(x, 0);
 	active.translate(offset);
-	if(checkState(active)) return;
-	active.translate(offset.inverse());
+	if(checkState(active)) return; //early exit if the piece is in a valid position
+	active.translate(offset.inverse()); //return to original position if not
     }
     public void hardDrop(){
 	score += 2 * cellsBelow() * level;
-	active = ghost;
+	active = ghost; 
 	ghost = null;
-	fillPiece(active);
+	fillPiece(active); //the active piece is now just part of the board state
 	spawn();
 	clear();	
     }
@@ -94,6 +98,7 @@ public class PlayField extends Grid{
 	}
     }
     private double getGravity(){
+	//gravity is in units of cells per frame;
 	return Math.pow((0.8 - ((level - 1) * 0.007)), (level - 1));
     }
     public void spawn(){
@@ -106,6 +111,7 @@ public class PlayField extends Grid{
     }
     private void clear(){
 	int cleared = 0;
+	//for loop counts number of lines that are full, ignoring the black boundraries, and clears them.
 	for(int i = fill.length - 2; i > 0; i--){
 	    int[] line = fill[i];
 	    boolean shouldClear = true;
@@ -119,6 +125,8 @@ public class PlayField extends Grid{
 		}
 	    }
 	}
+	//gravity in tetris is a stable sort where all the empty lines go to the top
+	//One of the only times where Java's extra indirection for array types is useful;
 	Arrays.sort(fill, 1, fill.length - 1, new Comparator<int[]>(){
 		public int compare(int[] a, int[] b){
 		    if(isEmpty(a) == isEmpty(b)) return 0;
@@ -158,7 +166,7 @@ public class PlayField extends Grid{
 	    }
 	}
 	lines += cleared;
-	levelUp();
+	levelUp(); //sets the new level based on the total lines cleared
     }
     private void levelUp(){
 	level = lines / 10 + 1;
@@ -173,10 +181,10 @@ public class PlayField extends Grid{
 	return level;
     }
     protected Piece getPiece(){
-	return active;
+	return active; //not ghost
     }
     public void takePiece(Piece piece){
-	if(piece == null){
+	if(piece == null){ //only happens if this is the first time the user holds a peice
 	    spawn();
 	}else{
 	    active = piece;
@@ -191,6 +199,6 @@ public class PlayField extends Grid{
 	return canHold;
     }
     public void setHoldable(){
-	canHold = false;
+	canHold = false; //can only be set to false from outside the object. 
     }
 }

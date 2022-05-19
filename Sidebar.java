@@ -3,6 +3,7 @@ import javax.swing.BoxLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 public class Sidebar extends JPanel{
+    //panel organizing key components vertically
     private Holder hold;
     private Holder next;
     private DisplayBox hText;

@@ -1,22 +1,29 @@
 import java.util.Iterator;
 public class Piece implements Iterable<Pixel>{
-    private double x;
-    private double y;
+    //handles the manipulation of piece data
+    private double x; 
+    private double y; 
+    //note x and y are ill defined unless the piece is in a grid
+    //x and y are doubles to allow for smoother animation, but only their int versions will ever be reported to the outside world;
+    //If you forget this you will get an IndexOutOfBounds Exception.
     private int rotation;
     private Pair[][] offsets;
     private int[][] raw;
     private double lastUpdate;
     public Piece(int[][] raw, Pair[][] offsets){
+	//the platonic ideal of a piece; should be preserved as the piece moves between coordinate systems;
 	this.raw = raw;
 	this.offsets = offsets;
     }
     public Piece(Piece p){
+	//A copy constructor
 	this.x = p.x;
 	this.y = p.y;
 	this.raw = p.raw;
 	this.offsets = p.offsets;
     }
     public Pair[] generateOffsets(int direction){
+	//generate offsets necessary for rotation based on intial and final rotation state;
 	int begin = rotation;
 	int end = (rotation + direction) % 4;
 	Pair[] toReturn = new Pair[offsets[0].length];
@@ -26,6 +33,7 @@ public class Piece implements Iterable<Pixel>{
 	return toReturn;
     }
     public void translate(Pair offset){
+	//mutator method that translates the piece;
 	x += offset.X;
 	y += offset.Y;
     }
@@ -45,8 +53,8 @@ public class Piece implements Iterable<Pixel>{
 	    raw = rotate(raw);
 	}
     }
-    public static int[][] rotate(int[][] input){
-	//rotation about the center of a square grid
+    private static int[][] rotate(int[][] input){
+	//arbitrary rotation about the center of a square grid
 	int l = input.length;
 	int[][] output = new int[l][l];
 	for(int row = 0; row < l/2 + 1; row++){
@@ -67,6 +75,7 @@ public class Piece implements Iterable<Pixel>{
 	return new PieceIterator(this);
     }
     class PieceIterator implements Iterator<Pixel>{
+	//A way to make iterating over a piece in a for-each loop return the grid locations it should cover;
 	private Piece p;
 	private int row;
 	private int col;
@@ -78,7 +87,7 @@ public class Piece implements Iterable<Pixel>{
 	    reported = 0;
 	}
 	public boolean hasNext(){
-	    return reported < 4;
+	    return reported < 4; //all pieces cover four squares;
 	}
 	private void advance(){
 	    col++;
@@ -88,18 +97,16 @@ public class Piece implements Iterable<Pixel>{
 	    }
 	}
 	public Pixel next(){
+	    //keep searching until you find a filled pixel;
 	    while(p.raw[row][col] == 0){
 		advance();
 	    }
 	    reported++;
-	    Pixel toReturn = new Pixel(col + (int) p.x, row + (int) p.y, p.raw[row][col]);
+	    Pixel toReturn = new Pixel(col + (int) p.x, row + (int) p.y, p.raw[row][col]); //return the coordinates of that pixel in its actual space;
 	    advance();
 	    return toReturn;
 	}
     }    
-    public int[][] getRaw(){
-	return raw;
-    }
     public void synchronize(double time){
 	lastUpdate = time;
     }
@@ -108,6 +115,7 @@ public class Piece implements Iterable<Pixel>{
 	synchronize(time);
     }
     public boolean locked(double time){
+	//a piece is still controllable after it hits the floor for 0.5 seconds;
 	return (time - lastUpdate) > 0.5;
     }
 }

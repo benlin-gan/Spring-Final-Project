@@ -1,5 +1,6 @@
 import java.awt.*;
 public abstract class Grid extends Canvas{
+    //class defining how to draw grids;
     private static final Color[] colors = {Color.WHITE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK.darker(), Color.BLACK};
     protected int[][] fill;
     protected int[][] border;
@@ -15,6 +16,7 @@ public abstract class Grid extends Canvas{
 		border[i][j] = 0;
 	    }
 	}
+	//construct black border, white interior.
     }
     public void paint(Graphics g){
 	Graphics2D g2 = (Graphics2D) g;
@@ -37,27 +39,30 @@ public abstract class Grid extends Canvas{
 	return true;
     }
     protected boolean checkState(Piece piece, int y){
-	//returns true if piece is in a valid position;
+	//returns true if location below the piece is in a valid position;
 	for(Pixel p : piece){
 	    if(fill[p.Y + y][p.X] != 0) return false;
 	}
 	return true;
     }
     protected void fillPiece(Piece piece){
+	//blit piece onto the grid;
 	for(Pixel p : piece){
 	    fill[p.Y][p.X] = p.STATE;
 	}
     }
     protected void outlinePiece(Piece piece){
+	//blit outline of piece onto the grid;
 	for(Pixel p : piece){
 	    border[p.Y][p.X] = p.STATE;
 	}
     }
     protected void removePiece(Piece piece){
+	//remove piece from the grid;
 	for(Pixel p: piece){
 	    fill[p.Y][p.X] = 0;
 	    border[p.Y][p.X] = 0;
 	}
     }
-    protected abstract Piece getPiece(); //is polymorphic because grids should  have the choice of which piece to send;
+    protected abstract Piece getPiece(); //is polymorphic because grids with multiple pieces have the choice of which piece to send;
 }

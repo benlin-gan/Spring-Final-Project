@@ -1,5 +1,5 @@
 public class Pixel{
-    //public because final;
+    //read-only data class representing a place on the grid
     public final int X;
     public final int Y;
     public final int STATE;
