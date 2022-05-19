@@ -13,6 +13,7 @@ public class PlayField extends Grid{
     private Clock clock;
     private boolean done;
     private boolean canHold;
+    private boolean majorCombo;
     public PlayField(Holder feeder, Clock clock, Log log){
 	super(24, 14);
 	score = 0;
@@ -23,6 +24,7 @@ public class PlayField extends Grid{
 	this.log = log;
 	canHold = true;
 	done = false;
+	majorCombo = false;
 	spawn();
 	ghost = null;
 
@@ -132,19 +134,28 @@ public class PlayField extends Grid{
 	    });
 	if(cleared == 1) {
 	    score += 100 * level;
-	    log.setMessage("Single!");
+	    log.setMessage("Single! +" + 100 * level);
+	    majorCombo = false;
 	}
 	else if(cleared == 2){
 	    score += 300 * level;
-	    log.setMessage("Double!");
+	    log.setMessage("Double! +" + 300 * level);
+	    majorCombo = false;
 	} 
 	else if(cleared == 3){
 	    score += 500 * level;
-	    log.setMessage("Triple!");
+	    log.setMessage("Triple! +" + 500 * level);
+	    majorCombo = false;
 	}
 	else if(cleared == 4){
-	    score += 800 * level;
-	    log.setMessage("Tetris!");
+	    if(majorCombo){
+		score += 1200 * level;
+		log.setMessage("Back-to-Back Tetris! +" + 1200 * level);
+	    }else{
+	    	score += 800 * level;
+	    	log.setMessage("Tetris! +" + 800 * level);
+		majorCombo = true;
+	    }
 	}
 	lines += cleared;
 	levelUp();

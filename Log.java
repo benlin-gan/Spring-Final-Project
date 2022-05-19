@@ -8,7 +8,7 @@ public class Log extends Canvas{
     public Log(Clock clock){
 	setSize(100, 100);
 	this.clock = clock;
-	this.setFont(new Font("Serif", Font.BOLD, 30));
+	this.setFont(new Font("Serif", Font.BOLD, 15));
     }
     public void setMessage(String message){
 	this.message = message;
