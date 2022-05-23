@@ -15,12 +15,41 @@ public class Main implements Runnable{
 	JPanel info = new JPanel();
 	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); 
 	PlayField playField = new PlayField(sidebar.getNext(), clock, log);
+	EventQueue eventQueue = new EventQueue();
 	frame.setSize(WIDTH, HEIGHT);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	playField.addKeyListener(new KeyListener(){
 		public void keyPressed(KeyEvent e){}
 		public void keyReleased(KeyEvent e){}
 		public void keyTyped(KeyEvent e){
+		    eventQueue.push(e);
+		}
+	    });
+	panel.add(playField);
+	DisplayBox score = new DisplayBox("score", playField.getScore());
+	DisplayBox lines = new DisplayBox("lines", playField.getLines());
+	DisplayBox level = new DisplayBox("level", playField.getLevel());
+	info.add(score);
+	info.add(level);
+	info.add(lines);
+	panel.add(info);
+	panel.add(sidebar);
+	frame.add(panel);
+	new Timer((int) (1000/FPS), new ActionListener(){
+		public void actionPerformed(ActionEvent event){
+		    clock.update(1.0/FPS);
+		    sidebar.repaint();
+		    score.update(playField.getScore());
+		    lines.update(playField.getLines());
+		    level.update(playField.getLevel());
+		    info.repaint();
+		    playField.drop();
+		    playField.setVisible(!playField.getDone());
+		    sidebar.setVisible(!playField.getDone());
+		    playField.repaint();
+		    frame.pack();
+		    KeyEvent e = eventQueue.pop();
+		    if(e == null) return;
 		    if(e.getKeyChar() == 'e'){
 			playField.rotate(1);
 		    }else if(e.getKeyChar() == 'q'){
@@ -40,33 +69,7 @@ public class Main implements Runnable{
 			    playField.takePiece(sidebar.getHold().getPiece());
 			    sidebar.getHold().takePiece(temp);
 			}
-			
-		    }
-		}
-	    });
-	panel.add(playField);
-	DisplayBox score = new DisplayBox("score", playField.getScore());
-	DisplayBox lines = new DisplayBox("lines", playField.getLines());
-	DisplayBox level = new DisplayBox("level", playField.getLevel());
-	info.add(score);
-	info.add(level);
-	info.add(lines);
-	panel.add(info);
-	panel.add(sidebar);
-	frame.add(panel);
-	new Timer((int) (1000/FPS), new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-		    clock.update(1.0/FPS);
-		    sidebar.repaint();
-		    score.update(playField.getScore());
-		    lines.update(playField.getLines());
-		    level.update(playField.getLevel());
-		    info.repaint();
-		    playField.drop();
-		    playField.setVisible(!playField.getDone());
-		    sidebar.setVisible(!playField.getDone());
-		    playField.repaint();
-		    frame.pack();
+		    }	
 		}
 	    }).start();
 	frame.setVisible(true);
