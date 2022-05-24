@@ -5,15 +5,17 @@ public class Main implements Runnable{
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 800;
     public static final double FPS = 60.0;
-    private static Clock clock = new Clock();
+    private static Clock clock = new Clock(); 
     private static Log log = new Log(clock);
+    //Every single object must hold a reference to the same clock and log
+    //this is done by 
     public void run(){
-	System.setProperty("sun.java2d.opengl", "true");
-    	JFrame frame = new JFrame("My Spring Final Project");
-	JPanel panel = new JPanel();
+	System.setProperty("sun.java2d.opengl", "true"); //enable GPU acceleration
+    	JFrame frame = new JFrame("A Totally Not Copyrighted Game");
+	JPanel panel = new JPanel(); //Outermost component in the heirarchy;
 	Sidebar sidebar = new Sidebar(log);
 	JPanel info = new JPanel();
-	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); 
+	info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS)); //Change layout to vertical grid
 	PlayField playField = new PlayField(sidebar.getNext(), clock, log);
 	EventQueue eventQueue = new EventQueue();
 	frame.setSize(WIDTH, HEIGHT);
@@ -44,8 +46,8 @@ public class Main implements Runnable{
 		    level.update(playField.getLevel());
 		    info.repaint();
 		    playField.drop();
-		    playField.setVisible(!playField.getDone());
-		    sidebar.setVisible(!playField.getDone());
+		    playField.setVisible(!playField.getDone()); 
+		    sidebar.setVisible(!playField.getDone()); //if game over, just show the score box
 		    playField.repaint();
 		    frame.pack();
 		    KeyEvent e = eventQueue.pop();

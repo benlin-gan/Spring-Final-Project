@@ -14,6 +14,8 @@ Stack the blocks. Don't let them reach the top. If an entire line is filled, it 
 - Double: 300 x level
 - Triple: 500 x level
 - Tetris: 800 x level
+- Back-To-Back Tetris : 1200 x level
+- Combos: 50 x combo x level
 # Miscellania
 Overall thoughts I had about implementing this game.
 ## Swing
