@@ -17,6 +17,7 @@ public class PlayField extends Grid{
     private boolean done;
     private boolean canHold; //can only hold once between piece locks
     private boolean majorCombo;
+    private int minorCombo;
     public PlayField(Holder feeder, Clock clock, Log log){
 	super(24, 14);
 	score = 0;
@@ -28,6 +29,7 @@ public class PlayField extends Grid{
 	canHold = true;
 	done = false;
 	majorCombo = false;
+	minorCombo = -1;
 	spawn();
 	ghost = null;
 
@@ -125,6 +127,7 @@ public class PlayField extends Grid{
 		}
 	    }
 	}
+	updateScore(cleared);
 	//gravity in tetris is a stable sort where all the empty lines go to the top
 	//One of the only times where Java's extra indirection for array types is useful;
 	Arrays.sort(fill, 1, fill.length - 1, new Comparator<int[]>(){
@@ -140,31 +143,46 @@ public class PlayField extends Grid{
 		    return true;
 		}
 	    });
+    }
+    private void updateScore(int cleared){
+	String message = "";
+	int actionScore = 0;
 	if(cleared == 1) {
-	    score += 100 * level;
-	    log.setMessage("Single! +" + 100 * level);
+	    actionScore += 100 * level;
+	    message += "Single ";
 	    majorCombo = false;
 	}
 	else if(cleared == 2){
-	    score += 300 * level;
-	    log.setMessage("Double! +" + 300 * level);
+	    actionScore += 300 * level;
+	    message += "Double ";
 	    majorCombo = false;
 	} 
 	else if(cleared == 3){
-	    score += 500 * level;
-	    log.setMessage("Triple! +" + 500 * level);
+	    actionScore += 500 * level;
+	    message += "Triple ";
 	    majorCombo = false;
 	}
 	else if(cleared == 4){
 	    if(majorCombo){
-		score += 1200 * level;
-		log.setMessage("Back-to-Back Tetris! +" + 1200 * level);
+		actionScore += 1200 * level;
+		message += "Back-to-Back Tetris ";
 	    }else{
-	    	score += 800 * level;
-	    	log.setMessage("Tetris! +" + 800 * level);
+	    	actionScore += 800 * level;
+	    	message += "Tetris ";
 		majorCombo = true;
 	    }
 	}
+	if(cleared == 0){
+	    minorCombo = -1;
+	}else{
+	    minorCombo++;
+	    int bonus = minorCombo * 50;
+	    if(bonus > 0){
+		message += "Combo (x" + minorCombo + ") ";
+		actionScore += bonus * level;
+	    }
+	}
+	if(actionScore > 0) log.setMessage(message + "+" + actionScore);
 	lines += cleared;
 	levelUp(); //sets the new level based on the total lines cleared
     }

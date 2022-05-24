@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 public class EventQueue{
     //queue for KeyEvents implemented with an arrayList;
+    //returns null if there are no events
     private ArrayList<KeyEvent> queue;
     public EventQueue(){
 	this.queue = new ArrayList<KeyEvent>();
